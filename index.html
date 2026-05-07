@@ -12,6 +12,9 @@
             --cs-dark-orange: #e48900;
             --text-main: #e2e8f0;
             --panel-bg: rgba(255, 255, 255, 0.05);
+            /* Переменные для анимации оружия */
+            --wpn-opacity: 0.15; /* Полупрозрачность ножей */
+            --wpn-blur: 1.5px;   /* Легкий блюр для глубины */
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
@@ -21,32 +24,67 @@
             min-height: 100vh; overflow-x: hidden; text-align: center;
         }
 
-        /* Анимированный фон (Стиль CS) */
-        .grid-bg {
+        /* --- БЛОК АНИМАЦИИ 10 НОЖЕЙ --- */
+        .weapons-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            overflow: hidden; pointer-events: none;
+        }
+
+        .weapon-icon {
+            position: absolute;
+            opacity: var(--wpn-opacity);
+            filter: blur(var(--wpn-blur));
+            will-change: transform;
+            object-fit: contain;
+        }
+
+        /* 3 разные траектории полета для разнообразия */
+        @keyframes float1 { 
+            0% { transform: translate(120vw, 120vh) rotate(0deg); } 
+            100% { transform: translate(-50vw, -50vh) rotate(360deg); } 
+        }
+        @keyframes float2 { 
+            0% { transform: translate(-50vw, 120vh) rotate(0deg); } 
+            100% { transform: translate(120vw, -50vh) rotate(-360deg); } 
+        }
+        @keyframes float3 { 
+            0% { transform: translate(120vw, -50vh) rotate(0deg); } 
+            100% { transform: translate(-50vw, 120vh) rotate(360deg); } 
+        }
+
+        /* Настройка каждого из 10 ножей (размер, траектория, скорость, старт) */
+        .weapon-1  { width: 140px; top: 0; left: 0; animation: float1 25s linear infinite; animation-delay: -5s; }
+        .weapon-2  { width: 110px; top: 0; left: 0; animation: float2 30s linear infinite; animation-delay: -12s; }
+        .weapon-3  { width: 160px; top: 0; left: 0; animation: float1 35s linear infinite; animation-delay: -20s; }
+        .weapon-4  { width: 90px;  top: 0; left: 0; animation: float3 28s linear infinite; animation-delay: -2s; }
+        .weapon-5  { width: 130px; top: 0; left: 0; animation: float2 40s linear infinite; animation-delay: -18s; }
+        .weapon-6  { width: 150px; top: 0; left: 0; animation: float1 22s linear infinite; animation-delay: -8s; }
+        .weapon-7  { width: 100px; top: 0; left: 0; animation: float3 33s linear infinite; animation-delay: -25s; }
+        .weapon-8  { width: 120px; top: 0; left: 0; animation: float2 26s linear infinite; animation-delay: -15s; }
+        .weapon-9  { width: 145px; top: 0; left: 0; animation: float1 38s linear infinite; animation-delay: -28s; }
+        .weapon-10 { width: 95px;  top: 0; left: 0; animation: float3 31s linear infinite; animation-delay: -10s; }
+        
+        /* Тусклый фон-сетка */
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(249, 168, 38, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(249, 168, 38, 0.08), transparent 25%);
-            animation: bgShift 10s ease-in-out infinite alternate;
+                radial-gradient(circle at 15% 50%, rgba(249, 168, 38, 0.04), transparent 30%),
+                radial-gradient(circle at 85% 30%, rgba(249, 168, 38, 0.06), transparent 25%);
+            animation: bgShift 15s ease-in-out infinite alternate;
         }
         
         @keyframes bgShift {
             0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-
-        .glow-blob {
-            position: fixed; width: 300px; height: 300px; background: var(--cs-orange);
-            border-radius: 50%; filter: blur(120px); opacity: 0.15; top: -50px; right: -50px; z-index: -2;
+            100% { transform: scale(1.08); }
         }
 
         .container { 
-            width: 100%; max-width: 450px; padding: 40px 20px; 
+            width: 100%; max-width: 450px; padding: 30px 20px; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             flex-grow: 1; z-index: 1;
         }
 
-        .header { margin-bottom: 30px; width: 100%; }
+        .header { margin-bottom: 25px; width: 100%; }
         h1 { font-size: 24px; font-weight: 800; margin: 0; line-height: 1.3; text-transform: uppercase; letter-spacing: 1px; }
         .highlight { 
             color: var(--cs-orange); font-weight: 900; font-size: 28px; 
@@ -60,11 +98,11 @@
 
         /* Блок с промокодом */
         .promo-box {
-            background: var(--panel-bg); border: 1px solid rgba(249, 168, 38, 0.3);
-            border-radius: 12px; padding: 15px 20px; width: 100%; margin-bottom: 25px;
+            background: var(--panel-bg); border: 1px solid rgba(249, 168, 38, 0.2);
+            border-radius: 12px; padding: 15px; width: 100%; margin-bottom: 20px;
             display: flex; flex-direction: column; align-items: center; gap: 10px;
         }
-        .promo-title { font-size: 14px; color: #94a3b8; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;}
+        .promo-title { font-size: 13px; color: #94a3b8; text-transform: uppercase; font-weight: 600; letter-spacing: 1px;}
         .promo-code { 
             font-size: 26px; font-weight: 900; color: #fff; letter-spacing: 2px;
             background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 8px;
@@ -75,9 +113,8 @@
             font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.3s;
             display: flex; align-items: center; gap: 8px; text-transform: uppercase;
         }
-        .copy-btn:hover { background: rgba(249, 168, 38, 0.3); }
 
-        /* Пульсирующая кнопка */
+        /* Главная кнопка */
         .btn-main { 
             background: linear-gradient(135deg, var(--cs-orange), var(--cs-dark-orange));
             color: #111; padding: 22px; border-radius: 12px; text-decoration: none; 
@@ -85,54 +122,64 @@
             justify-content: center; gap: 12px;
             border: none; width: 100%; cursor: pointer; text-transform: uppercase;
             animation: btnHeartbeat 2.5s infinite;
-            box-shadow: 0 10px 30px rgba(249, 168, 38, 0.3);
-            transition: box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px rgba(249, 168, 38, 0.25);
             margin-bottom: 30px;
         }
 
         @keyframes btnHeartbeat {
-            0% { transform: scale(1); box-shadow: 0 10px 30px rgba(249, 168, 38, 0.3); }
-            5% { transform: scale(1.03); box-shadow: 0 15px 40px rgba(249, 168, 38, 0.5); }
-            10% { transform: scale(1); box-shadow: 0 10px 30px rgba(249, 168, 38, 0.3); }
-            15% { transform: scale(1.02); box-shadow: 0 12px 35px rgba(249, 168, 38, 0.4); }
-            20% { transform: scale(1); box-shadow: 0 10px 30px rgba(249, 168, 38, 0.3); }
-            100% { transform: scale(1); box-shadow: 0 10px 30px rgba(249, 168, 38, 0.3); }
+            0% { transform: scale(1); }
+            5% { transform: scale(1.03); }
+            10% { transform: scale(1); }
+            15% { transform: scale(1.02); }
+            20% { transform: scale(1); }
+            100% { transform: scale(1); }
         }
 
-        .btn-main:active { animation: none; transform: scale(0.95); box-shadow: 0 5px 15px rgba(249, 168, 38, 0.2); }
-
-        /* Инструкции в картинках */
-        .instructions { width: 100%; display: flex; flex-direction: column; gap: 15px; }
-        .instructions h3 { font-size: 16px; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; }
-        .inst-img { width: 100%; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-
-        /* Overlay */
-        #guideOverlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(18, 20, 24, 0.98); z-index: 9999; display: none;
-            flex-direction: column; justify-content: center; align-items: center;
-            padding: 30px; text-align: center;
+        /* Инструкции в картинках и текст шагов */
+        .instructions { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+        .instructions h3 { font-size: 16px; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; font-weight: 700;}
+        .inst-img { width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        
+        .step-text {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: left;
+            margin-top: 10px;
+            padding-left: 10px;
+            border-left: 3px solid var(--cs-orange);
+            line-height: 1.4;
         }
+
+        /* Оверлей */
+        #guideOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(18, 20, 24, 0.98); z-index: 9999; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; }
         .arrow-top { position: absolute; top: 30px; right: 40px; font-size: 60px; color: var(--cs-orange); animation: point 0.8s infinite alternate; }
         @keyframes point { from { transform: translate(0, 0); } to { transform: translate(10px, -10px); } }
-        
-        .overlay-text { font-size: 20px; line-height: 1.6; color: white; margin-top: 20px; font-weight: 600; }
-        .overlay-step { color: var(--cs-orange); font-size: 16px; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; font-weight: 800; }
-        .fake-btn { 
-            color: var(--cs-orange); font-size: 22px; border: 2px dashed var(--cs-orange); 
-            padding: 15px 25px; border-radius: 8px; display: inline-block; 
-            margin-top: 25px; font-weight: bold; background: rgba(249, 168, 38, 0.05);
-        }
+        .overlay-text { font-size: 19px; line-height: 1.6; color: white; margin-top: 20px; font-weight: 600; }
+        .overlay-step { color: var(--cs-orange); font-size: 15px; text-transform: uppercase; font-weight: 800; }
+        .fake-btn { color: var(--cs-orange); font-size: 20px; border: 2px dashed var(--cs-orange); padding: 12px 22px; border-radius: 8px; display: inline-block; margin-top: 25px; font-weight: bold; background: rgba(249, 168, 38, 0.05); }
     </style>
 </head>
 <body>
 
+<div class="weapons-bg">
+    <img src="1.png" class="weapon-icon weapon-1" alt="knife">
+    <img src="2.png" class="weapon-icon weapon-2" alt="knife">
+    <img src="3.png" class="weapon-icon weapon-3" alt="knife">
+    <img src="4.png" class="weapon-icon weapon-4" alt="knife">
+    <img src="5.png" class="weapon-icon weapon-5" alt="knife">
+    <img src="6.png" class="weapon-icon weapon-6" alt="knife">
+    <img src="7.png" class="weapon-icon weapon-7" alt="knife">
+    <img src="8.png" class="weapon-icon weapon-8" alt="knife">
+    <img src="9.png" class="weapon-icon weapon-9" alt="knife">
+    <img src="10.png" class="weapon-icon weapon-10" alt="knife">
+</div>
+
 <div class="grid-bg"></div>
-<div class="glow-blob"></div>
 
 <div class="container">
     <div class="header">
-        <h1>🔥 Забирай <br><span class="highlight">ТОПОВЫЙ СКИН</span><br> прямо сейчас!</h1>
+        <h1>🔥 ЛУТАЙ <br><span class="highlight">ТОПОВЫЕ СКИНЫ</span><br> ПРЯМО СЕЙЧАС!</h1>
     </div>
 
     <div class="promo-box">
@@ -144,12 +191,16 @@
     </div>
 
     <button class="btn-main" onclick="handleMainClick()">
-        <i class="fas fa-crosshairs"></i> ЗАЛУТАТЬ СКИН
+        <i class="fas fa-crosshairs"></i> ПЕРЕЙТИ НА MYCSGO
     </button>
 
     <div class="instructions">
-        <h3>Куда вводить промокод:</h3>
+        <h3>Как забрать бонус:</h3>
+        
+        <div class="step-text">1. Нажмите на свой баланс.</div>
         <img src="screen2.jpg" alt="Шаг 1" class="inst-img">
+        
+        <div class="step-text">2. Введите промокод winwin77 в соответствующее поле.</div>
         <img src="screen3.jpg" alt="Шаг 2" class="inst-img">
     </div>
 </div>
@@ -169,16 +220,13 @@
 </div>
 
 <script>
-    // Целевая ссылка
     const targetUrl = "https://mycsgoo.in";
 
-    // Функция проверки браузера (TikTok, Instagram и т.д.)
     function isRestrictedBrowser() {
         var ua = navigator.userAgent || navigator.vendor || window.opera;
         return (ua.indexOf('TikTok') > -1) || (ua.indexOf('musical_ly') > -1) || (ua.indexOf('App-WebView') > -1) || (ua.indexOf('Instagram') > -1);
     }
 
-    // Автоматический переход в обычном браузере через 1 секунду
     window.onload = function() {
         if (!isRestrictedBrowser()) {
             setTimeout(function() {
@@ -187,18 +235,14 @@
         }
     }
 
-    // Обработка клика по главной кнопке
     function handleMainClick() {
         if (isRestrictedBrowser()) {
-            // Показываем инструкцию, если мы внутри TikTok
             document.getElementById('guideOverlay').style.display = 'flex';
         } else {
-            // Сразу перекидываем, если мы в обычном браузере
             window.location.href = targetUrl;
         }
     }
 
-    // Копирование промокода
     function copyPromo() {
         const promo = document.getElementById('promoText').innerText;
         navigator.clipboard.writeText(promo).then(() => {
